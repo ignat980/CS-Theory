@@ -55,11 +55,11 @@ class LinkedList(object):
         return returned.data
 
     # Old method of iteration
-    # def _node_generator(self):
-    #     current = self.head
-    #     while current is not None:
-    #         yield current
-    #         current = current.next
+    def _node_iterator(self):
+        current = self.head
+        while current is not None:
+            yield current
+            current = current.next
 
     def __len__(self):
         return self.size
@@ -74,9 +74,9 @@ class LinkedList(object):
         new_node.next = self.head
         # reassign head reference
         self.head = new_node
-        self.size += 1
-        if self.size == 1:
+        if self.is_empty():
             self.tail = self.head
+        self.size += 1
 
     def insert_at_tail(self, data):
         """Creates a node at the end of the linked list"""
@@ -137,12 +137,27 @@ class LinkedList(object):
         if value == self.head.data:
             self.remove_head()
             return
-        for item in self:
-            if value == item.data:
-                previousNode.next = item.next
+        for node in self._node_iterator():
+            if value == node.data:
+                previousNode.next = node.next
                 self.size -= 1
-                return item.data
-            previousNode = item
+                return node.data
+            previousNode = node
+        raise ValueError('Value not in linked list')
+
+    def remove_tail(self, arg):
+        if self.is_empty():
+            raise ValueError('List is empty')
+        current = self.head
+        while current.next != self.tail.next:
+            current = current.next
+
+    def contains(self, value):
+        """Searches for the value in the linked list"""
+        for item in self:
+            if item == value:
+                return True
+        return False
 
     def calculate_size(self):
         count = 0

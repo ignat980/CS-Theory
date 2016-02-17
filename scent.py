@@ -1,6 +1,7 @@
 from sniffer.api import *  # import the really small API
-import os  # termstyle
 from subprocess import call
+from datetime import datetime
+import os  # , termstyle
 
 # you can customize the pass/fail colors like this
 # pass_fg_color = termstyle.green
@@ -10,6 +11,12 @@ from subprocess import call
 
 # All lists in this variable will be under surveillance for changes.
 # watch_paths = ['.', 'tests/']
+
+
+@select_runnable('first')
+@file_validator
+def python_files(filename):
+    return filename.endswith('.py') and not os.path.basename(filename).startswith('.')
 
 
 @select_runnable('linked_list_test')
@@ -36,3 +43,9 @@ def hash_table_test(*args):
     print("===Hash Table Test===")
     command = "nosetests tests/test_hash_table.py -v"  # nose.run(argv=['tests/test_linked_list.py', '-v'])
     return call(command, shell=True) == 0
+
+
+@runnable
+def first(*args):
+    print(str(datetime.now()))
+    return True

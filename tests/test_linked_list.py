@@ -28,9 +28,24 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(repr(ll), 'LinkedList(1)')
         ll = LinkedList([1, 2, 3, 4])
         self.assertEqual(repr(ll), 'LinkedList(1, 2, 3, 4)')
-        # ll.remove_item('blank')
-        # print('Removed an item:', ll)
-        # print('Value at index 1:', repr(testLL.get_at_index(1)))
+
+    def test_remove_items(self):
+        ll = LinkedList([1, 2, 3, 4, 5, 3])
+        ll.remove_item(2)
+        self.assertFalse(ll.contains(2))
+        ll.remove_item(3)
+        self.assertTrue(ll.contains(3))
+        ll.remove_head()
+        self.assertEqual(ll.get_at_head(), 4)
+        with self.assertRaises(ValueError):
+            ll.remove_item('lol')
+        with self.assertRaises(ValueError):
+            ll.remove_item(None)
+
+    def test_list_comprehension(self):
+        ll = LinkedList([1, 2, 3, 4, 5, 6])
+        self.assertListEqual([item for item in ll], [1, 2, 3, 4, 5, 6])
+        self.assertListEqual([item for item in reversed([item for item in ll])], [6, 5, 4, 3, 2, 1])
         # print('Iterated:', [item for item in testLL])
         # print('Reversed:', [item for item in reversed([item for item in testLL])])
         # print('Counted size:', str(testLL.size) + "; Calculated size:", testLL.calculate_size())
