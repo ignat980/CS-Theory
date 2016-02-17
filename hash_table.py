@@ -1,7 +1,7 @@
-from linkedList import LinkedList
+from linked_list import LinkedList
 
 
-class HashBrownTable(object):
+class HashTable(object):
     """An implementation of a HashTable, stores data with key-value pairs."""
     def __init__(self, array=None):
         self._bucketLength = 8
@@ -98,3 +98,6 @@ class HashBrownTable(object):
                 if key is not None or value is not None:
                     data.append((key, value))
         return data
+
+    def is_empty(self):
+        return self.size == 0

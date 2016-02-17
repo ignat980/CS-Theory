@@ -11,7 +11,7 @@ class Node(object):
         self.next = None
 
     def __repr__(self):
-            return 'Node(' + repr(self.data) + ')'
+        return 'Node(' + repr(self.data) + ')'
 
 
 class LinkedList(object):
@@ -21,9 +21,11 @@ class LinkedList(object):
         self.head = None
         self.size = 0
         self.tail = None
-        if data:
-            self.tail = self.head = Node(data)
-            self.size = 1
+        if isinstance(data, list):
+            for item in data:
+                self.insert_at_tail(item)
+        elif data:
+            self.insert_at_head(data)
 
     def __repr__(self):
         """String Representation of Linked List"""
@@ -32,9 +34,9 @@ class LinkedList(object):
         dataLength = len(self)
         if dataLength == 0:
             return string + ')'
-        for item in data:
+        for index, item in enumerate(data):
             string += repr(item)
-            if item != self.tail:
+            if index < self.size - 1:
                 string += ', '
         return string + ')'
 
@@ -52,6 +54,7 @@ class LinkedList(object):
             self.current = self.current.next
         return returned.data
 
+    # Old method of iteration
     # def _node_generator(self):
     #     current = self.head
     #     while current is not None:
@@ -78,7 +81,7 @@ class LinkedList(object):
     def insert_at_tail(self, data):
         """Creates a node at the end of the linked list"""
         if self.size == 0:
-            self.tail = Node(data)
+            self.head = self.tail = Node(data)
         else:
             self.tail.next = Node(data)
             self.tail = self.tail.next
