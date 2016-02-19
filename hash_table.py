@@ -3,12 +3,12 @@ from linked_list import LinkedList
 
 class HashTable(object):
     """An implementation of a HashTable, stores data with key-value pairs."""
-    def __init__(self, array=None):
+    def __init__(self, dictionary=None):
         self._bucketLength = 8
         self._buckets = [LinkedList() for i in range(0, self._bucketLength)]
         self.size = 0
-        if array is not None:
-            for key, value in array:
+        if isinstance(dictionary, dict):
+            for key, value in dictionary:
                 self.set(key, value)
 
     def __repr__(self):
@@ -33,6 +33,22 @@ class HashTable(object):
     # easier to read and write.
     def __len__(self):
         return self.size
+
+    def __getitem__(self, key):
+        """Returns the data for a given key."""
+        for k, value in self._buckets[hash(key) % self._bucketLength]:
+            if k == key:
+                return value
+        raise KeyError('Key not found')
+
+    def __setitem__(self, key, value):
+        self.set(key, value)
+
+    def __delitem__(self, key):
+        ...
+
+    def __contains__(self, key):
+        ...
 
     # Expands the hash table so there is less chance of a collision
     def _expand(self):
@@ -64,13 +80,6 @@ class HashTable(object):
         self.set(key, None)
         self._buckets[hash(key) % self._bucketLength].remove_item((key, None))
         self.size -= 1
-
-    # Returns the data for a given key.
-    def get(self, key):
-        for item in self._buckets[hash(key) % self._bucketLength]:
-            if item[0] == key:
-                return item[1]
-        raise KeyError('Key not founds')
 
     # Returns an array of keys.
     def keys(self):

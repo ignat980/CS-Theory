@@ -33,14 +33,14 @@ def hash_table_file(filename):
 
 @runnable
 def linked_list_test(*args):
-    print("===Linked List Test===")
+    print("===Linked List Tests===")
     command = "nosetests tests/test_linked_list.py -v"  # nose.run(argv=['tests/test_linked_list.py', '-v'])
     return call(command, shell=True) == 0
 
 
 @runnable
 def hash_table_test(*args):
-    print("===Hash Table Test===")
+    print("===Hash Table Tests===")
     command = "nosetests tests/test_hash_table.py -v"  # nose.run(argv=['tests/test_linked_list.py', '-v'])
     return call(command, shell=True) == 0
 
