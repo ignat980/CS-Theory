@@ -32,6 +32,12 @@ def hash_table_file(filename):
 
 
 @runnable
+def first(*args):
+    print(str(datetime.now()))
+    return True
+
+
+@runnable
 def linked_list_test(*args):
     print("===Linked List Tests===")
     command = "nosetests tests/test_linked_list.py -v"  # nose.run(argv=['tests/test_linked_list.py', '-v'])
@@ -43,9 +49,3 @@ def hash_table_test(*args):
     print("===Hash Table Tests===")
     command = "nosetests tests/test_hash_table.py -v"  # nose.run(argv=['tests/test_linked_list.py', '-v'])
     return call(command, shell=True) == 0
-
-
-@runnable
-def first(*args):
-    print(str(datetime.now()))
-    return True
