@@ -16,6 +16,13 @@ class TestLinkedList(unittest.TestCase):
         self.assertFalse(ll.is_empty())
         ll = LinkedList('Data', 'Data2', 'Data3')
 
+    def test_init_with_list(self):
+        self.ll = LinkedList([1, 2, 3, 4])
+        self.assertEqual(self.ll['head'], [1, 2, 3, 4])
+        self.ll = LinkedList(*[1, 2, 3, 4])
+        self.assertEqual(self.ll['head'], 1)
+        self.assertEqual(self.ll['tail'], 4)
+
     def test_get(self):
         with self.assertRaises(IndexError, msg="Get at head/tail from empty linked list should return IndexError"):
             self.ll.get_at_head()
@@ -49,7 +56,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(self.ll[-2:-2], LinkedList(), "Get slice '[:2]' should return a shallow subcopy of the list")
         self.assertEqual(self.ll[:-5], LinkedList(), "Get slice '[:-5]' should return an empty linked list")
         self.assertEqual(self.ll[1:-5], LinkedList(), "Get slice '[1:-5]' should return an empty linked list, values stop is less than start")
-        self.assertEqual(self.ll[1:-5:-1], LinkedList(2, 1), "Get slice '[5:]' should return an empty linked list")
+        self.assertEqual(self.ll[1:-5:-1], LinkedList(2, 1), "Get slice '[1:-5:-1]' should return an shallow subcopy of the linked list")
 
     def test_insert_at_head(self):
         self.ll.insert_at_head('Data1')
@@ -111,7 +118,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(self.ll['tail'], 'Data2', 'Set at -1 should update tail pointer in linked list with one item')
 
     def test_remove_items(self):
-        self.ll = LinkedList([1, 2, 3, 4, 5, 3])
+        self.ll = LinkedList(1, 2, 3, 4, 5, 3)
         self.ll.remove_item(2)
         self.assertFalse(self.ll.contains(2))
         self.ll.remove_item(3)
@@ -124,7 +131,7 @@ class TestLinkedList(unittest.TestCase):
             self.ll.remove_item(None)
 
     def test_list_comprehension(self):
-        self.ll = LinkedList([1, 2, 3, 4, 5, 6])
+        self.ll = LinkedList(1, 2, 3, 4, 5, 6)
         self.assertListEqual([item for item in self.ll], [1, 2, 3, 4, 5, 6])
         self.assertListEqual([item for item in reversed([item for item in self.ll])], [6, 5, 4, 3, 2, 1])
 
@@ -143,4 +150,6 @@ class TestLinkedList(unittest.TestCase):
         self.ll = LinkedList(1)
         self.assertEqual(repr(self.ll), 'LinkedList(1)')
         self.ll = LinkedList([1, 2, 3, 4])
+        self.assertEqual(repr(self.ll), 'LinkedList([1, 2, 3, 4])')
+        self.ll = LinkedList(1, 2, 3, 4)
         self.assertEqual(repr(self.ll), 'LinkedList(1, 2, 3, 4)')

@@ -5,7 +5,7 @@ class HashTable(object):
     """An implementation of a HashTable, stores data with key-value pairs."""
     def __init__(self, dictionary=None):
         self._bucketLength = 8
-        self._buckets = [LinkedList() for i in range(0, self._bucketLength)]
+        self._buckets = [LinkedList() for i in range(self._bucketLength)]
         self.size = 0
         if isinstance(dictionary, dict):
             for key, value in dictionary:

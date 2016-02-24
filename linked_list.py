@@ -1,3 +1,6 @@
+from warnings import warn
+
+
 class Node(object):
     """A node that is used by a linked list, it contains data and a pointer to another node."""
     count = 0
@@ -29,21 +32,15 @@ class LinkedList(object):
     although `if not list: ` is preferred
     * set, get, and remove values at the head, tail, or an index
     """
-    def __init__(self, *datum):
+    def __init__(self, *data):
         """Initalizes a linked list from a list of data
-
-        If you give an array, it will be converted into a linked list
-        You can also pass a list of arguments to initalize the linked list
         """
         # empty LinkedList
         self.head = None
         self.size = 0
         self.tail = None
-        if isinstance(datum[0], list):
-            for item in datum[0]:
-                self.insert_at_tail(item)
-        for data in datum:
-            self.insert_at_tail(data)
+        for datum in data:
+            self['tail'] = datum
 
     def __repr__(self):
         """String Representation of Linked List"""
@@ -103,7 +100,13 @@ class LinkedList(object):
         return self.size
 
     def __setitem__(self, idx, value):
-        self.set_at_index(idx, value)
+        if isinstance(idx, str):
+            if idx == 'head':
+                return self.set_at_index(0, value)
+            elif idx == 'tail':
+                return self.set_at_index(-1, value)
+        elif isinstance(idx, int):
+            return self.set_at_index(idx, value)
 
     def __getitem__(self, idx):
         """Returns the item at the given index
@@ -119,36 +122,60 @@ class LinkedList(object):
         elif isinstance(idx, int):
             return self.get_at_index(idx)
         elif isinstance(idx, slice):
+            # Make copy
             l = LinkedList()
             if idx.step is None:
+                # ll[::], full copy
                 if idx.start is None and idx.stop is None:
                     for item in self:
                         l[-1] = item
+                # ll[i::], copy from some index
                 elif idx.start is not None and idx.stop is None:
                     current = None
                     try:
-                        current = self.__get_node_at_index(idx.start)
+                        if idx.start < 0:
+                            current = self.__get_node_at_index(len(self) + idx.start)
+                        else:
+                            current = self.__get_node_at_index(idx.start)
                     except IndexError:
                         pass
                     while current is not None:
                         l[-1] = current.data
                         current = current.next
+                # ll[:i:], copy to some index
                 elif idx.start is None and idx.stop is not None:
+                    __stop = idx.stop
                     count = -1
+                    if __stop < 0:
+                        __stop = len(self) + idx.stop
+                        # ll[:-len], trying to get between 0 and first element
+                        if __stop == 0:
+                            return l
                     current = self.head
+                    while current is not None and count != __stop:
+                        l[-1] = current.data
+                        current = current.next
+                        count += 1
+                # ll[i:j:], copy sublist
+                else:
+                    # ll[i:i:], trying to access some inbetween part.
+                    # Useless for get, used in set to insert data inbetween list
+                    if idx.start == idx.stop or idx.stop < idx.start:
+                        return l
+                    current = None
+                    count = idx.start - 1
+                    try:
+                        current = self.__get_node_at_index(idx.start)
+                    except IndexError:
+                        pass
                     while current is not None and count != idx.stop:
                         l[-1] = current.data
                         current = current.next
                         count += 1
-                else:
-                    current = None
-                    try:
-                        current = self.__get_node_at_index(idx.start)
-                    except IndexError:
-                        pass
-                    while current is not None:
-                        l[-1] = current.data
-                        current = current.next
+            elif idx.step < 0:
+                warn('Reverse stepping greater than 1 discouraged,'
+                     ' turn into python list then use negative slice',
+                     SyntaxWarning)
             return l
         else:
             raise KeyError('Key {} not defined for linked list'.format(idx))
