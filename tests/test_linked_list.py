@@ -9,12 +9,13 @@ class TestLinkedList(unittest.TestCase):
 
     def test_init(self):
         ll = LinkedList()
-        self.assertTrue(ll.is_empty())
+        self.assertTrue(ll.is_empty(), msg="initalizing an empty linked list should be empty")
         ll = LinkedList('Data')
-        self.assertFalse(ll.is_empty())
+        self.assertFalse(ll.is_empty(), msg="initalizing a linked list with one element should not be empty")
         ll = LinkedList(['Data', 'Data2'])
-        self.assertFalse(ll.is_empty())
+        self.assertFalse(ll.is_empty(), msg="initalizing a linked list with one list should not be empty")
         ll = LinkedList('Data', 'Data2', 'Data3')
+        self.assertFalse(ll.is_empty(), msg="initalizing a linked list with multiple element should not be empty")
 
     def test_init_with_list(self):
         self.ll = LinkedList([1, 2, 3, 4])
@@ -46,17 +47,18 @@ class TestLinkedList(unittest.TestCase):
         self.ll = LinkedList(1, 2, 3, 4, 5)
         self.assertEqual(self.ll[:], LinkedList(1, 2, 3, 4, 5), "Get slice '[:]' should return a shallow copy of the list")
         self.assertEqual(self.ll[2:], LinkedList(3, 4, 5), "Get slice '[2:]' should return a shallow subcopy of the list")
-        self.assertEqual(self.ll[:2], LinkedList(1, 2, 3), "Get slice '[:2]' should return a shallow subcopy of the list")
-        self.assertEqual(self.ll[1:3], LinkedList(2, 3, 4), "Get slice '[1:3]' should return a shallow subcopy of the list")
+        self.assertEqual(self.ll[:2], LinkedList(1, 2), "Get slice '[:2]' should return a shallow subcopy of the list")
+        self.assertEqual(self.ll[1:3], LinkedList(2, 3), "Get slice '[1:3]' should return a shallow subcopy of the list")
         self.assertEqual(self.ll[1:1], LinkedList(), "Get slice '[1:1]' should return an empty linked list")
         self.assertEqual(self.ll[5:], LinkedList(), "Get slice '[5:]' should return an empty linked list")
         self.assertEqual(self.ll[-3:], LinkedList(3, 4, 5), "Get slice '[-3:]' should return a shallow subcopy of the list")
-        self.assertEqual(self.ll[:-3], LinkedList(1, 2, 3), "Get slice '[:-3]' should return a shallow subcopy of the list")
-        self.assertEqual(self.ll[-4:-2], LinkedList(2, 3, 4), "Get slice '[-4:-2]' should return a shallow subcopy of the list")
+        self.assertEqual(self.ll[:-3], LinkedList(1, 2), "Get slice '[:-3]' should return a shallow subcopy of the list")
+        self.assertEqual(self.ll[-4:-2], LinkedList(2, 3), "Get slice '[-4:-2]' should return a shallow subcopy of the list")
         self.assertEqual(self.ll[-2:-2], LinkedList(), "Get slice '[:2]' should return a shallow subcopy of the list")
         self.assertEqual(self.ll[:-5], LinkedList(), "Get slice '[:-5]' should return an empty linked list")
         self.assertEqual(self.ll[1:-5], LinkedList(), "Get slice '[1:-5]' should return an empty linked list, values stop is less than start")
-        self.assertEqual(self.ll[1:-5:-1], LinkedList(2, 1), "Get slice '[1:-5:-1]' should return an shallow subcopy of the linked list")
+        self.assertEqual(self.ll[::-1], LinkedList(5, 4, 3, 2, 1))
+        # self.assertEqual(self.ll[1:-5:-1], LinkedList(2, 1), "Get slice '[1:-5:-1]' should return an shallow subcopy of the linked list")
 
     def test_insert_at_head(self):
         self.ll.insert_at_head('Data1')
@@ -103,7 +105,7 @@ class TestLinkedList(unittest.TestCase):
         self.ll[0] = 'Data2'
         self.assertEqual(self.ll['head'], 'Data2', 'Set at 0 should update head pointer in linked list with one item')
         self.assertEqual(self.ll['tail'], 'Data2', 'Set at 0 should update tail pointer in linked list with one item')
-        self.ll[len(self.ll)] = 'Data3'
+        self.ll[1] = 'Data3'
         self.assertEqual(self.ll['head'], 'Data2', 'Set at 1 should not update head pointer in linked list with one item')
         self.assertEqual(self.ll['tail'], 'Data3', 'Set at 1 should update tail pointer in linked list with one item')
 
@@ -114,10 +116,22 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(self.ll['head'], 'Data1', 'Set at -1 should update head pointer in linked list with no items')
         self.assertEqual(self.ll['tail'], 'Data1', 'Set at -1 should update tail pointer in linked list with no items')
         self.ll.set_at_index(-1, 'Data2')
-        self.assertEqual(self.ll['head'], 'Data1', 'Set at -1 should not update head pointer in linked list with one item')
+        self.assertEqual(self.ll['head'], 'Data2', 'Set at -1 should update head pointer in linked list with one item')
         self.assertEqual(self.ll['tail'], 'Data2', 'Set at -1 should update tail pointer in linked list with one item')
+        self.ll.set_at_index(-2, 'Data3')
+        self.assertEqual(self.ll['head'], 'Data3', 'Set at -2 should update head pointer in linked list with one item')
+        self.assertEqual(self.ll['tail'], 'Data2', 'Set at -2 should not update tail pointer in linked list with one item')
+        self.ll.set_at_index(-3, 'Data4')
+        self.assertEqual(self.ll['head'], 'Data3', 'Set at -3 should update head pointer in linked list with multiple items')
+        self.assertEqual(self.ll['tail'], 'Data2', 'Set at -3 should not update tail pointer in linked list with multiple items')
 
     def test_remove_items(self):
+        with self.assertRaises(ValueError, msg='Remove functions should raise ValueError on empty linked list'):
+            self.ll.remove_item(None)
+        with self.assertRaises(ValueError, msg='Remove functions should raise ValueError on empty linked list'):
+            self.ll.remove_head()
+        with self.assertRaises(ValueError, msg='Remove functions should raise ValueError on empty linked list'):
+            self.ll.remove_tail()
         self.ll = LinkedList(1, 2, 3, 4, 5, 3)
         self.ll.remove_item(2)
         self.assertFalse(self.ll.contains(2))
@@ -153,3 +167,13 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(repr(self.ll), 'LinkedList([1, 2, 3, 4])')
         self.ll = LinkedList(1, 2, 3, 4)
         self.assertEqual(repr(self.ll), 'LinkedList(1, 2, 3, 4)')
+
+    def test_node_removal(self):
+        self.ll = LinkedList(4, 7, 9, 11)
+        check_node = self.ll._get_node_at_index(2)
+        with self.assertRaises(ValueError):
+            self.ll._remove_node(self.ll.tail)
+        self.ll._remove_node(self.ll.head)
+        self.assertEqual(self.ll, LinkedList(7, 9, 11))
+        self.ll._remove_node(check_node)
+        self.assertEqual(self.ll, LinkedList(7, 11))
