@@ -136,14 +136,14 @@ class LinkedList(object):
             end = idx.stop or len(self)
             if start < 0:
                 start = len(self) + start
-            if start < 0:
-                start = 0
+                if start < 0:
+                    start = 0
             if start >= len(self):
                 return l
             if end < 0:
                 end = len(self) + end
-            if end < 0:
-                end = 0
+                if end < 0:
+                    end = 0
             if end > len(self):
                 end = len(self)
             count = start
@@ -342,7 +342,7 @@ class LinkedList(object):
         node.data = node.next.data
         node.next = node.next.next
 
-    def contains(self, value):
+    def __contains__(self, value):
         """Searches for the value in the linked list"""
         for item in self:
             if item == value:
