@@ -1,41 +1,49 @@
-from hash_table import HashTable
 import unittest
+from data_structures.hash_table import HashTable
 
 
 class TestHashTable(unittest.TestCase):
+    def setUp(self):
+        self.hash_table = HashTable(13)
+
     def test_init(self):
-        hs = HashTable()
-        self.assertTrue(hs.is_empty())
+        bucket_size = len(self.hash_table.buckets)
+        self.assertEqual(13, bucket_size)
+        self.assertEqual(bucket_size, self.hash_table.bucket_count)
+        self.assertEqual(0, self.hash_table.item_count)
 
-    def hashTableTest():
-        print('=====HASH TABLE TEST=====')
-        testHT = HashTable()
-        print('Empty hash table:', testHT)
-        testHT.set('Key', 7)
-        print('Hash table has one element:', testHT)
-        testHT.set('OtherKey', 14)
-        testHT.set('ThirdKey', 28)
-        print('Hash table has three elements:', testHT)
-        testHT.set('FourthKey', 56)
-        testHT.set('FifthKey', 112)
-        testHT.set('SixthKey', 224)
-        testHT.set('SeventhKey', 448)
-        print('Hash table should have expanded')
-        print('Hash table keys:', testHT.keys())
-        print('Hash table values:', testHT.values())
-        testHT.remove_item('Key')
-        print('Hash table removed items:', testHT)
-        testHT.remove_item('key')
-        print('Hash table should be the same:', testHT)
-        testHT.set('OtherKey', 5)
-        print('\'OtherKey\' should be different:', testHT)
+    def test_set_value_for_key(self):
+        self.hash_table["key"] = "Bob"
+        self.assertEqual(1, self.hash_table.item_count)
+        self.assertEqual("Bob", self.hash_table["key"])
+        self.hash_table["key"] = "Max"
+        self.assertEqual("Max", self.hash_table["key"])
 
+    def test_get_value_for_key(self):
+        self.hash_table["Bob"] = "male"
+        self.hash_table["Bob"] = "alpha male"
+        self.hash_table["Alexa"] = "female"
+        self.assertNotEqual("male", self.hash_table["Bob"])
+        self.assertEqual("alpha male", self.hash_table["Bob"])
 
-def queueTest():
-    ...
+    def test_remove_key(self):
+        self.hash_table["Bob"] = "male"
+        self.assertEqual("male", self.hash_table["Bob"])
+        self.assertEqual(1, self.hash_table.item_count)
+        del self.hash_table["Bob"]
+        self.assertEqual(0, self.hash_table.item_count)
+        self.assertIsNone(self.hash_table["Bob"])
 
+    def test_contains(self):
+        self.hash_table["Bob"] = "male"
+        self.hash_table["Alex"] = "male"
+        self.assertTrue("Bob" in self.hash_table)
+        self.assertTrue("Alex" in self.hash_table)
+        self.assertFalse("Chris" in self.hash_table)
 
-# if __name__ == '__main__':
-# unittest.main()
-#     suite = unittest.TestLoader().loadTestsFromTestCase(TestLinkedList)
-#     unittest.TextTestRunner(verbosity=2).run(suite)
+    # test helper methods
+
+    # def test_get_bucket_index_for_key(self):
+    #     index = self.hash_table._get_bucket_index_for_key("key")
+    #     self.assertTrue(index < self.hash_table.bucket_count)
+    #     self.assertTrue(isinstance(index, int))

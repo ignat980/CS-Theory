@@ -1,4 +1,4 @@
-from linked_list import LinkedList
+from data_structures.linked_list import LinkedList
 import unittest
 
 
@@ -134,9 +134,9 @@ class TestLinkedList(unittest.TestCase):
             self.ll.remove_tail()
         self.ll = LinkedList(1, 2, 3, 4, 5, 3)
         self.ll.remove_item(2)
-        self.assertFalse(self.ll.contains(2))
+        self.assertFalse(2 in self.ll)
         self.ll.remove_item(3)
-        self.assertTrue(self.ll.contains(3))
+        self.assertFalse(3 in self.ll)
         self.ll.remove_head()
         self.assertEqual(self.ll['head'], 4)
         with self.assertRaises(ValueError):
@@ -147,7 +147,7 @@ class TestLinkedList(unittest.TestCase):
     def test_list_comprehension(self):
         self.ll = LinkedList(1, 2, 3, 4, 5, 6)
         self.assertListEqual([item for item in self.ll], [1, 2, 3, 4, 5, 6])
-        self.assertListEqual([item for item in reversed([item for item in self.ll])], [6, 5, 4, 3, 2, 1])
+        self.assertListEqual(list(reversed([item for item in self.ll])), [6, 5, 4, 3, 2, 1])
 
     def test_size(self):
         self.assertEqual(len(self.ll), 0)
