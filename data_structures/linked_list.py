@@ -77,16 +77,16 @@ class LinkedList(object):
 
     # Makes the list an iterable with for..in syntax
     def __iter__(self):
-        self.__current = self.head
+        self._current = self.head
         return self
 
     # Used by iterable to implement iteration
     def __next__(self):
-        returned = self.__current
+        returned = self._current
         if returned is None:
             raise StopIteration()
         else:
-            self.__current = self.__current.next
+            self._current = self._current.next
         return returned.data
 
     # Generator iteration
@@ -354,3 +354,21 @@ class LinkedList(object):
         for item in self:
             l.append(item)
         return l
+
+    def merge(self, other):
+        current_left = self.head
+        current_right = self.head
+        new_end = None
+        if current_left < current_right:
+            new_end = current_left
+        else:
+            new_end = current_right
+        next_left = current_left.next
+        next_right = current_right.next
+        while current_left is not None and current_right is not None:
+            if current_right > current_left:
+                new
+            else:
+                current_right < current_left
+            current_left = current_left.next
+            current_right = current_right.next
