@@ -16,6 +16,29 @@ class Node(object):
     def __repr__(self):
         return 'Node(' + repr(self.data) + ')'
 
+    def __eq__(self, other):
+        return self.data == other.data
+
+    def __ne__(self, other):
+        return self.data != other.data
+
+    def __lt__(self, other):
+        return self.data < other.data
+
+    def __le__(self, other):
+        return self.data <= other.data
+
+    def __gt__(self, other):
+        return self.data > other.data
+
+    def __ge__(self, other):
+        return self.data >= other.data
+
+    def __bool__(self):
+        """Checking the truth value of this node is assumed to be
+        whether or not this node is the end"""
+        return self.next is not None
+
     def set_next(self, node):
         self.next = node
         return self
