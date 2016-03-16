@@ -380,18 +380,25 @@ class LinkedList(object):
 
     def merge(self, other):
         current_left = self.head
-        current_right = self.head
-        new_end = None
-        if current_left < current_right:
-            new_end = current_left
-        else:
-            new_end = current_right
+        current_right = other.head
         next_left = current_left.next
         next_right = current_right.next
-        while current_left is not None and current_right is not None:
-            if current_right > current_left:
-                new
-            else:
-                current_right < current_left
-            current_left = current_left.next
-            current_right = current_right.next
+        while next_left is not None and next_right is not None:
+            if current_right > current_left and current_right < next_left:
+                current_left.next = current_right
+                if next_right > next_left:
+                    current_right.next = current_left = next_left
+                else:
+                    current_right = next_left
+            elif current_right < current_left and next_right > current_left:
+                current_right.next = current_left
+                if next_left > next_right:
+                    current_left.next = current_right = next_right
+                else:
+                    current_right = next_right
+            elif current_right > current_left and current_right > next_left:
+                current_left = next_left
+                next_left = current_left.next
+            elif current_right < current_left and current_right < next_left:
+                current_right = next_right
+                next_right = current_right.next
