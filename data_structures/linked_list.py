@@ -378,27 +378,24 @@ class LinkedList(object):
             l.append(item)
         return l
 
-    def merge(self, other):
+    def merge_lists(self, other):
+        if self.head is None:
+            self.head = other.head
+            return self
+        elif other.head is None:
+            return self
+
+        new_head = new_node = Node()
         current_left = self.head
         current_right = other.head
-        next_left = current_left.next
-        next_right = current_right.next
-        while next_left is not None and next_right is not None:
-            if current_right > current_left and current_right < next_left:
-                current_left.next = current_right
-                if next_right > next_left:
-                    current_right.next = current_left = next_left
-                else:
-                    current_right = next_left
-            elif current_right < current_left and next_right > current_left:
-                current_right.next = current_left
-                if next_left > next_right:
-                    current_left.next = current_right = next_right
-                else:
-                    current_right = next_right
-            elif current_right > current_left and current_right > next_left:
-                current_left = next_left
-                next_left = current_left.next
-            elif current_right < current_left and current_right < next_left:
-                current_right = next_right
-                next_right = current_right.next
+        while not (current_left is None or current_right is None):
+            if current_left.value < current_right.value:
+                current = current_left
+                current_left = current_left.next
+            else:
+                current = current_right
+                current_right = current_right.next
+            new_node.next = current
+            new_node = new_node.next
+        new_node.next = current_left or current_right
+        return new_head.next
