@@ -98,6 +98,9 @@ class LinkedList(object):
                     return False
         return False
 
+    def __bool__(self):
+        return bool(self.size)
+
     # Makes the list an iterable with for..in syntax
     def __iter__(self):
         self._current = self.head
@@ -112,7 +115,7 @@ class LinkedList(object):
             self._current = self._current.next
         return returned.data
 
-    # Generator iteration
+    # Generator iteration for nodes
     def _node_iterator(self):
         current = self.head
         while current is not None:
@@ -212,9 +215,6 @@ class LinkedList(object):
 
     def is_empty(self):
         return not bool(self.size)
-
-    def __bool__(self):
-        return bool(self.size)
 
     def insert_at_index(self, idx, data):
         if idx == 0:
@@ -327,13 +327,13 @@ class LinkedList(object):
         self.size -= 1
 
     def remove_item(self, value):
-        """Removes the value from the list"""
+        """Removes value from the list"""
         if not self:
             raise ValueError('List is empty')
-        previousNode = self.head
         if value == self.head.data:
             self.remove_head()
             return
+        previousNode = self.head
         for node in self._node_iterator():
             if value == node.data:
                 previousNode.next = node.next
@@ -378,24 +378,33 @@ class LinkedList(object):
             l.append(item)
         return l
 
-    def merge_lists(self, other):
+    def merge(self, other):
+        """Merges two sorted linked lists, assumes both lists are in increasing order"""
         if self.head is None:
             self.head = other.head
             return self
         elif other.head is None:
             return self
-
+        # Make a new psuedo linked list
         new_head = new_node = Node()
+        # Have refrences to the start of both lists
         current_left = self.head
         current_right = other.head
         while not (current_left is None or current_right is None):
-            if current_left.value < current_right.value:
+            # Set the current node's next pointer to the grater node
+            if current_left < current_right:
                 current = current_left
                 current_left = current_left.next
             else:
                 current = current_right
                 current_right = current_right.next
+            # Chain the psuedo linked list with the current node
             new_node.next = current
             new_node = new_node.next
+        # Point to the rest of the lists
         new_node.next = current_left or current_right
-        return new_head.next
+        # Assign the linked list's head to the new made list
+        self.head = new_head.next
+        if self.tail < other.tail:
+            self.tail = other.tail
+        return self

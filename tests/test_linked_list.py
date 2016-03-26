@@ -136,7 +136,7 @@ class TestLinkedList(unittest.TestCase):
         self.ll.remove_item(2)
         self.assertFalse(2 in self.ll)
         self.ll.remove_item(3)
-        self.assertFalse(3 in self.ll)
+        self.assertTrue(3 in self.ll)
         self.ll.remove_head()
         self.assertEqual(self.ll['head'], 4)
         with self.assertRaises(ValueError):
@@ -177,3 +177,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(self.ll, LinkedList(7, 9, 11))
         self.ll._remove_node(check_node)
         self.assertEqual(self.ll, LinkedList(7, 11))
+
+    def test_merge(self):
+        self.ll = LinkedList(4, 7, 9, 11)
+        self.assertEqual(self.ll.merge(LinkedList(2, 5, 6, 12, 15, 16)), LinkedList(2, 4, 5, 6, 7, 9, 11, 12, 15, 16), 'Merge linked lists should return a sorted linked list')
