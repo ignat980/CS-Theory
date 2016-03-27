@@ -180,4 +180,12 @@ class TestLinkedList(unittest.TestCase):
 
     def test_merge(self):
         self.ll = LinkedList(4, 7, 9, 11)
-        self.assertEqual(self.ll.merge(LinkedList(2, 5, 6, 12, 15, 16)), LinkedList(2, 4, 5, 6, 7, 9, 11, 12, 15, 16), 'Merge linked lists should return a sorted linked list')
+        self.assertEqual(self.ll.merge(LinkedList(2, 5, 6, 12, 15, 16)),
+                         LinkedList(2, 4, 5, 6, 7, 9, 11, 12, 15, 16),
+                         'Merge linked lists should return a sorted linked list')
+        self.assertEqual(self.ll.merge(LinkedList(5, 12, 15, 16)),
+                         LinkedList(4, 5, 7, 9, 11, 12, 15, 16),
+                         'Merge linked lists should return a sorted linked list')
+        self.assertEqual(self.ll.merge(LinkedList()),
+                         LinkedList(4, 7, 9, 11),
+                         'Merge linked lists should return a sorted linked list')
