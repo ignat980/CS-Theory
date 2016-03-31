@@ -1,0 +1,34 @@
+Alternative Resizable Array:
+
+I would have a linked list of arrays, of quadratic increasing buffer sizes,
+and I would keep track of the sizes of every array, unless getting array size
+is constant, then I would traverse the list to get the size when I need it.
+I would also keep track of the last array (the tail of the linked list)
+so that I could quickly append new data.
+When you append to an array and there is no more space, I would
+create a new array of twice the buffer size before it, and append
+to the end of the linked list.
+The first array can be 16 slots, I think that is a reasonable first size.
+When you try to get a data at some index, it would traverse the list
+until the the index is within the correct array.
+Get and set at indexes become O(log(n)), while append is still O(1).
+
+
+Implement a Queue:
+
+All of the data structures mentioned can be used to make a queue. I think
+the linked list approach is the best, since a queue is defined as FIFO data structure.
+The linked list can be used as a FIFO structure. If it is used, the operations `enqueue`,
+`dequeue`, `front`, and `size` would all run in constant time, since you are just
+manipulating the `head` and `tail` pointers. You would `enqueue` at the `head`, and
+you would `dequeue` and `front` at the tail. In a queue you don't access the elements
+in the middle.
+A circular buffer implementation constrains the size of the queue. You don't want to overwrite data.
+The best part about the circular buffer is that you never really need to make new Node objects.
+The pointers to `enqueue` and `dequeue` will just keep going around the buffer, adding or removing
+data. All of the queue's operations will also be constant time.
+The resizable array approach is interesting, since you are using an array and linked list together.
+`dequeue` will become an interesting function since you end up throwing away entire small empty arrays, and
+you don't reuse the array's slots when you enqueue, since you always append(`enqueue`) to the end.
+The operations are still constant time, more-or-less. The only possibly slow points would be to
+remove arrays when dequeueing or creating arrays when appending.
