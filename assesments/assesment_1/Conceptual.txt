@@ -32,3 +32,15 @@ The resizable array approach is interesting, since you are using an array and li
 you don't reuse the array's slots when you enqueue, since you always append(`enqueue`) to the end.
 The operations are still constant time, more-or-less. The only possibly slow points would be to
 remove arrays when dequeueing or creating arrays when appending.
+
+
+Hash Table Buckets:
+
+Using any other list does not have any performance benefit. When you have a collision,
+and you want to return the value, you have to find the value (Usually by storing the key
+with the value). This is an inherently O(n) operation, where n is the length of the
+collision chaining list.
+Using another hash table may be more efficient if it is shared across all buckets for
+chaining by the first hash table, and its bucket size is different, by + 1, for example,
+because then the modulus operator puts the values in totally different spots, letting
+the hash table be more efficient.
