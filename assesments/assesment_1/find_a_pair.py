@@ -1,9 +1,12 @@
 def find_pair(numbers=[], target=0):
+    pairs = []
     for idx, first in enumerate(numbers):
         for second in numbers[idx:]:
             if first + second == target:
-                return (first, second)
-    return "not found"
+                pairs.append((first, second))
+    if len(pairs) == 0:
+        pairs = "not found"
+    return pairs
 
 
 def test():
