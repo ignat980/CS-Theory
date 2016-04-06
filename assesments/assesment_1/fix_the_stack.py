@@ -10,17 +10,30 @@ class Node(object):
 class Stack(object):
     def __init__(self, *data):
         self.size = 0
-        pass
+        self.head = None
+        for datum in reversed(data):
+            self.push(datum)
 
     def push(self, data):
+        if self.head is None:
+            self.head = Node(data)
+        else:
+            temp = self.head
+            self.head = Node(data)
+            self.head.next = temp
         self.size += 1
-        pass
 
-    def pop(self, data):
-        pass
+    def pop(self):
+        if self.head is None:
+            raise ("Stack is empty")
+        else:
+            data = self.head.data
+            self.head = self.head.next
+        self.size -= 1
+        return data
 
     def peek(self):
-        pass
+        return self.head.data
 
 
 def fix_stack(stack):
@@ -29,7 +42,16 @@ def fix_stack(stack):
         last = stack.pop()
         stack.push(before_last)
         stack.push(last)
+        print("Swapping", before_last, "and", last)
     else:
         element = stack.pop()
         fix_stack(stack)
         stack.push(element)
+
+
+def test():
+    stack = Stack(1, 2, 3, 4, 5, 6, 8, 7)
+    fix_stack(stack)
+
+if __name__ == '__main__':
+    test()
