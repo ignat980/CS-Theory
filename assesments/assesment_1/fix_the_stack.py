@@ -43,15 +43,17 @@ def fix_stack(stack):
         stack.push(before_last)
         stack.push(last)
         print("Swapping", before_last, "and", last)
-    else:
+    elif stack.size > 2:
         element = stack.pop()
         fix_stack(stack)
         stack.push(element)
 
 
 def test():
-    stack = Stack(1, 2, 3, 4, 5, 6, 8, 7)
-    fix_stack(stack)
+    fix_stack(Stack(1, 2, 3, 4, 5, 6, 8, 7))
+    fix_stack(Stack(2, 1))
+    fix_stack(Stack(1))
+    fix_stack(Stack())
 
 if __name__ == '__main__':
     test()
