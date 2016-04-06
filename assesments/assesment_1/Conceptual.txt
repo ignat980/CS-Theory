@@ -43,4 +43,5 @@ collision chaining list.
 Using another hash table may be more efficient if it is shared across all buckets for
 chaining by the first hash table, and its bucket size is different, by + 1, for example,
 because then the modulus operator puts the values in totally different spots, letting
-the hash table be more efficient.
+the hash table be more efficient. This could potentially use a lot of unnecessary space,
+but there are optimizations available.
