@@ -1,5 +1,5 @@
 import unittest
-from data_structures.heap import MinHeap
+from ..data_structures import MinHeap
 
 
 class TestMinHeap(unittest.TestCase):
@@ -9,9 +9,9 @@ class TestMinHeap(unittest.TestCase):
     def test_init(self):
         self.heap.size == 0
         with self.assertRaises(IndexError, msg="Peek on an empty heap should raise IndexError"):
-            self.peek()
+            self.heap.peek()
         with self.assertRaises(IndexError, msg="Pop on an empty heap should raise IndexError"):
-            self.pop()
+            self.heap.pop()
         self.heap.insert(5)
         self.assertEqual(self.heap.size, 1, msg="Insert should increase the size property of heap")
         self.assertEqual(self.heap.peek(), 5, msg="Peek should return smallest item in heap")

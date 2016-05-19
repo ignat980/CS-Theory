@@ -1,5 +1,5 @@
 import unittest
-from algorithms.palindrome import PalindromeChecker
+from ..algorithms import PalindromeChecker
 
 
 class TestPalindrome(unittest.TestCase):

@@ -1,5 +1,5 @@
-from algorithms.sort import *
 import unittest
+from ..algorithms import insertion_sort, selection_sort, sort_by
 
 
 class TestSort(unittest.TestCase):

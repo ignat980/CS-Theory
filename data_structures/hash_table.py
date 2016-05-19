@@ -1,4 +1,4 @@
-from data_structures import LinkedList
+from . import LinkedList
 
 
 class HashTable(object):

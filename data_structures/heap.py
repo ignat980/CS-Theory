@@ -5,11 +5,12 @@ class Node(object):
 
 class MinHeap(object):
     """Your classic implementation of a Heap"""
-    def __init__(self, data):
+    def __init__(self, data=None):
         self.size = 0
         self._items = []
-        for datum in data:
-            self.insert(datum)
+        if data is not None:
+            for datum in data:
+                self.insert(datum)
 
     def __repr__(self):
         return repr(self._items)

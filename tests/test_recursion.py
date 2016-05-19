@@ -1,5 +1,5 @@
 import unittest
-from algorithms.recursion import factorial, fibonacci, linear_search, binary_search
+from ..algorithms import *
 
 
 class TestRecursion(unittest.TestCase):
