@@ -11,8 +11,19 @@ class MinHeap(object):
         for datum in data:
             self.insert(datum)
 
+    def __repr__(self):
+        return repr(self._items)
+
+    def __eq__(self, other):
+        return self._items == other._items
+
+    def __bool__(self):
+        return bool(self.size)
+
     def insert(self, data):
         self.size += 1
+        self._items.append(data)
+        self._bubble_up(self.size)
 
     def pop(self):
         if self.size == 0:
@@ -29,7 +40,10 @@ class MinHeap(object):
         return self._items[0]
 
     def _bubble_up(self, index):
-        pass
+        while index // 2 > 0:
+            if self._items[index] < self._items[index // 2]:
+                self._items[index], self._items[index // 2] = self._items[index // 2], self._items[index]
+            index = index // 2
 
     def _bubble_down(self, index):
         pass
