@@ -25,7 +25,7 @@ class TestLinkedList(unittest.TestCase):
         self.assertEqual(self.ll['tail'], 4)
 
     def test_get(self):
-        with self.assertRaises(ValueError, msg="Get at head/tail from empty linked list should raise IndexError"):
+        with self.assertRaises(ValueError, msg="Get at head/tail from empty linked list should raise ValueError"):
             self.ll.get_at_head()
             self.ll.get_at_tail()
         self.ll = LinkedList(1, 2, 3, 4)
