@@ -42,6 +42,17 @@ def water_trapped(towers):
                 total += max_tower - tower
     return total
 
+# the code above works likes this:
+# 1. find the max tower
+# 2. build an array of max towers from left to right
+# 3. find the max tower from right to left
+# 4. calculate the difference between the max tower and the look_ahead
+# 5. if the max tower is greater than the look_ahead, calculate the difference
+#    between the max tower and the current tower
+# 6. if the look_ahead is greater than the max tower, calculate the difference
+#    between the look_ahead and the current tower
+# 7. add the difference to the total
+# 8. return the total
 
 if __name__ == '__main__':
     towers = sys.argv[1:]
