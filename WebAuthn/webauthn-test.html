@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing WebAuthn</title>
+</head>
+<body>
+    <script>
+        // This script will attempt to register a new credential and immediately 
+// try to authenticate using it, all locally without any server involvement.
+
+async function localTest() {
+    try {
+        // Registering a mock credential
+        const createCredentialOptions = {
+            rp: {
+                name: 'Local Test',
+                id: 'localhost'
+            },
+            user: {
+                id: new Uint8Array(16),
+                name: 'localuser',
+                displayName: 'Local User'
+            },
+            challenge: crypto.getRandomValues(new Uint8Array(16)), // Local random challenge
+            pubKeyCredParams: [
+                { type: 'public-key', alg: -7 }, // ES256
+                { type: 'public-key', alg: -257 } // RS256
+            ],
+            authenticatorSelection: {
+                authenticatorAttachment: 'platform',
+                userVerification: 'required'
+            },
+            timeout: 60000
+        };
+
+        const credential = await navigator.credentials.create({ publicKey: createCredentialOptions });
+        console.log('Credential created:', credential);
+
+        // Now, let's authenticate using the just created credential
+        const getAssertionOptions = {
+            rpId: window.location.hostname,
+            challenge: crypto.getRandomValues(new Uint8Array(16)), // Another local random challenge
+            allowCredentials: [{
+                type: 'public-key',
+                id: credential.rawId
+            }],
+            timeout: 60000,
+            userVerification: 'required'
+        };
+
+        const assertion = await navigator.credentials.get({ publicKey: getAssertionOptions });
+        console.log('Assertion result:', assertion);
+
+        console.log('Fingerprint was scanned and matched successfully!');
+
+    } catch (error) {
+        console.error('Error during local test:', error);
+    }
+}
+
+// Call the function
+localTest();
+    </script>
+</body>
+</html>
