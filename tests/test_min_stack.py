@@ -1,5 +1,5 @@
 import unittest
-from data_structures.min_stack import MinStack
+from ..data_structures import MinStack
 
 
 class TestMinStack(unittest.TestCase):
